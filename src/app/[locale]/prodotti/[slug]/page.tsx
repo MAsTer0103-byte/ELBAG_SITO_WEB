@@ -1,25 +1,21 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getLocale } from "next-intl/server";
 
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { productCategories } from "@/data/productCategories";
+export const dynamic = "force-dynamic";
 
 type ProductCategoryPageProps = {
-  params: { slug: string };
+  params: Promise<{ locale: string; slug: string }>;
 };
-
-export function generateStaticParams() {
-  return productCategories.map((category) => ({ slug: category.slug }));
-}
 
 export default async function ProductCategoryPage({
   params,
 }: ProductCategoryPageProps) {
-  const locale = await getLocale();
-  const category = productCategories.find((item) => item.slug === params.slug);
+  const { locale, slug } = await params;
+  const category = productCategories.find((item) => item.slug === slug);
 
   if (!category) {
     notFound();
