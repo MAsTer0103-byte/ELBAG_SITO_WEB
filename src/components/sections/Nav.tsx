@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
@@ -6,9 +7,23 @@ export function Nav() {
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-white/80 backdrop-blur">
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-4">
-        <Link href="#hero" className="flex items-center gap-2 text-sm font-semibold">
-          <span className="inline-flex h-2.5 w-2.5 rounded-full bg-primary" />
-          ELBAG SIMP
+        <Link href="#hero" className="flex items-center gap-2">
+          <div className="flex flex-col gap-1">
+            <Image
+              src="/images/brand/logo.webp"
+              alt="ELBAG Logo"
+              width={100}
+              height={40}
+              className="h-auto w-24"
+            />
+            <Image
+              src="/images/brand/tricolore.webp"
+              alt="Italian flag"
+              width={100}
+              height={4}
+              className="h-1 w-24"
+            />
+          </div>
         </Link>
         <nav className="hidden items-center gap-6 text-sm text-muted-foreground md:flex">
           <Link href="#chi-siamo" className="hover:text-foreground">
