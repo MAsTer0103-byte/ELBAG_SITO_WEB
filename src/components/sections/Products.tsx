@@ -61,13 +61,13 @@ export function Products() {
               >
                 <Card className="group h-full overflow-hidden border-border/60 bg-white/80 shadow-soft transition-all hover:-translate-y-1 hover:shadow-glow">
                   {product.image && (
-                    <div className="relative h-44 w-full overflow-hidden bg-slate-100 p-4">
+                    <div className="relative h-60 w-full overflow-hidden bg-white p-2">
                       <div className="relative h-full w-full">
                         <Image
                           src={product.image}
                           alt={product.title}
                           fill
-                          className="object-contain transition-transform duration-300 group-hover:scale-110"
+                          className="object-cover transition-transform duration-300 group-hover:scale-110"
                         />
                       </div>
                     </div>

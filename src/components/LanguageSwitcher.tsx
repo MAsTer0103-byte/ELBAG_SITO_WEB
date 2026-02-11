@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useLocale } from "next-intl";
@@ -32,17 +33,52 @@ export function LanguageSwitcher() {
   const pathname = usePathname();
   const currentLocale = useLocale() || defaultLocale;
   const basePath = stripLocale(pathname);
+  
+  const [isOpen, setIsOpen] = useState(false);
+  const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
+
+  const handleMouseEnter = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    setIsOpen(true);
+  };
+
+  const handleMouseLeave = () => {
+    timeoutRef.current = setTimeout(() => {
+      setIsOpen(false);
+    }, 300); // 300ms delay prima di chiudere
+  };
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
 
   return (
-    <div className="relative group">
+    <div 
+      className="relative"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       <button
         type="button"
         className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200/70 bg-white/80 text-base shadow-soft transition hover:-translate-y-0.5"
         aria-label="Language selection"
+        onClick={() => setIsOpen(!isOpen)}
       >
         <span aria-hidden>{localeInfo[currentLocale as Locale]?.flag}</span>
       </button>
-      <div className="pointer-events-none absolute right-0 top-11 z-50 min-w-[140px] rounded-2xl border border-slate-200/70 bg-white/95 p-2 text-sm opacity-0 shadow-soft transition group-hover:pointer-events-auto group-hover:opacity-100">
+      <div 
+        className={`absolute right-0 top-11 z-50 min-w-[140px] rounded-2xl border border-slate-200/70 bg-white/95 p-2 text-sm shadow-soft transition-all duration-200 ${
+          isOpen 
+            ? 'pointer-events-auto opacity-100 translate-y-0' 
+            : 'pointer-events-none opacity-0 -translate-y-2'
+        }`}
+      >
         {locales.map((locale) => {
           const href = basePath === "/" ? `/${locale}` : `/${locale}${basePath}`;
 
