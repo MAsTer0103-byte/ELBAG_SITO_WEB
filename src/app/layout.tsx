@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getLocale } from "next-intl/server";
 import { Sora, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 
@@ -20,13 +21,15 @@ export const metadata: Metadata = {
     "ELBAG SIMP progetta e produce contenitori tecnici in plastica per elettronica, domotica e automazione. Dal 1985, soluzioni custom e modulari.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
+
   return (
-    <html lang="it">
+    <html lang={locale}>
       <body
         className={`${sora.variable} ${spaceGrotesk.variable} font-sans antialiased`}
       >
